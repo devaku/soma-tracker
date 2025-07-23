@@ -1,0 +1,42 @@
+DOCUMENTATION
+https://firebase.google.com/docs/firestore/quickstart
+
+
+DATABASE LAYOUT
+let users = [
+	{
+		id: '', // This will be the Firebase given ID by the Auth
+
+		first_name: '',
+		last_name: '',
+		email: '',
+		exercises: [
+			{
+				id: 123,
+				// ...API info
+				name: 'Skiing, water skiing',
+				calories_per_hour: 354,
+				duration_minutes: 60,
+				total_calories: 354,
+			},
+		],
+		meals: [
+			{
+				id: 1234,
+				// ... API info
+				name: 'brisket',
+				calories: 1312.3,
+				serving_size_g: 453.592,
+				fat_total_g: 82.9,
+				fat_saturated_g: 33.2,
+				protein_g: 132,
+				sodium_mg: 217,
+				potassium_mg: 781,
+				cholesterol_mg: 487,
+				carbohydrates_total_g: 0,
+				fiber_g: 0,
+				sugar_g: 0,
+			},
+		],
+	},
+];

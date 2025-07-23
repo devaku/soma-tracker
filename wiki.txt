@@ -1,0 +1,57 @@
+// Some properties are only available in the PREMIUM tier
+// Refer to API documentation
+
+https://api-ninjas.com/api/caloriesburned
+
+[
+  {
+    "name": "Skiing, water skiing",
+    "calories_per_hour": 354,
+    "duration_minutes": 60,
+    "total_calories": 354
+  },
+  {
+    "name": "Cross country snow skiing, slow",
+    "calories_per_hour": 413,
+    "duration_minutes": 60,
+    "total_calories": 413
+  },
+  {
+    "name": "Cross country skiing, moderate",
+    "calories_per_hour": 472,
+    "duration_minutes": 60,
+    "total_calories": 472
+  },
+]
+
+https://api-ninjas.com/api/nutrition
+[
+  {
+    "name": "brisket",
+    "calories": 1312.3,
+    "serving_size_g": 453.592,
+    "fat_total_g": 82.9,
+    "fat_saturated_g": 33.2,
+    "protein_g": 132,
+    "sodium_mg": 217,
+    "potassium_mg": 781,
+    "cholesterol_mg": 487,
+    "carbohydrates_total_g": 0,
+    "fiber_g": 0,
+    "sugar_g": 0
+  },
+  {
+    "name": "fries",
+    "calories": 317.7,
+    "serving_size_g": 100,
+    "fat_total_g": 14.8,
+    "fat_saturated_g": 2.3,
+    "protein_g": 3.4,
+    "sodium_mg": 212,
+    "potassium_mg": 124,
+    "cholesterol_mg": 0,
+    "carbohydrates_total_g": 41.1,
+    "fiber_g": 3.8,
+    "sugar_g": 0.3
+  }
+]
