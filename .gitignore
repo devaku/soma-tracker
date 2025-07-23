@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore Firebase service account keys
+server/soma-tracker-firebase-adminsdk-*.json
