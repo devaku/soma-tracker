@@ -1,4 +1,4 @@
-# Project in Web Developer 2
+# Project in Web Development 2
 
 ## Programmers
 
