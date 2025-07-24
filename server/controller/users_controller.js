@@ -1,5 +1,5 @@
 import express from 'express';
-import admin from '../services/firebase.js';
+import admin from '../services/firebase_admin.js';
 import responseBuilder from '../services/response_builder.js';
 
 const router = express.Router();
@@ -18,14 +18,7 @@ function errorResponse(res, error, statusCode) {
 // CREATE user
 router.post('/', async (req, res) => {
 	try {
-		const {
-			email,
-			password,
-			first_name,
-			last_name,
-			exercises = [],
-			meals = [],
-		} = req.body;
+		const { email, password, first_name, last_name } = req.body;
 		// Create user in Firebase Auth
 		const userRecord = await admin.auth().createUser({
 			email,
@@ -37,8 +30,6 @@ router.post('/', async (req, res) => {
 			first_name,
 			last_name,
 			email,
-			exercises,
-			meals,
 		});
 
 		let finalResponse = responseBuilder(201, {
@@ -46,8 +37,6 @@ router.post('/', async (req, res) => {
 			email,
 			first_name,
 			last_name,
-			exercises,
-			meals,
 		});
 
 		res.status(201).json(finalResponse);
@@ -99,10 +88,10 @@ router.get('/:id', async (req, res) => {
 // UPDATE user
 router.put('/:id', async (req, res) => {
 	try {
-		const { first_name, last_name, exercises, meals } = req.body;
+		const { first_name, last_name } = req.body;
 		await usersCollection
 			.doc(req.params.id)
-			.update({ first_name, last_name, exercises, meals });
+			.update({ first_name, last_name });
 
 		let finalResponse = responseBuilder(
 			200,
