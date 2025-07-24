@@ -1,9 +1,19 @@
 import express from 'express';
-import admin from '../firebase.js';
+import admin from '../services/firebase.js';
+import responseBuilder from '../services/response_builder.js';
 
 const router = express.Router();
 const db = admin.firestore();
 const usersCollection = db.collection('users');
+
+function errorResponse(res, error, statusCode) {
+	let finalResponse = responseBuilder(statusCode, {
+		error_message: error.message,
+		stack: error.stack,
+	});
+
+	res.status(statusCode).json(finalResponse);
+}
 
 // CREATE user
 router.post('/', async (req, res) => {
@@ -17,13 +27,11 @@ router.post('/', async (req, res) => {
 			meals = [],
 		} = req.body;
 		// Create user in Firebase Auth
-		const userRecord = await admin
-			.auth()
-			.createUser({
-				email,
-				password,
-				displayName: `${first_name} ${last_name}`,
-			});
+		const userRecord = await admin.auth().createUser({
+			email,
+			password,
+			displayName: `${first_name} ${last_name}`,
+		});
 		// Add user profile to Firestore
 		await usersCollection.doc(userRecord.uid).set({
 			first_name,
@@ -32,7 +40,8 @@ router.post('/', async (req, res) => {
 			exercises,
 			meals,
 		});
-		res.status(201).json({
+
+		let finalResponse = responseBuilder(201, {
 			id: userRecord.uid,
 			email,
 			first_name,
@@ -40,8 +49,10 @@ router.post('/', async (req, res) => {
 			exercises,
 			meals,
 		});
+
+		res.status(201).json(finalResponse);
 	} catch (error) {
-		res.status(400).json({ error: error.message });
+		errorResponse(res, error, 400);
 	}
 });
 
@@ -53,9 +64,15 @@ router.get('/', async (req, res) => {
 			id: doc.id,
 			...doc.data(),
 		}));
-		res.json(users);
+
+		let finalResponse = responseBuilder(
+			200,
+			users,
+			'Sucessfully found users!'
+		);
+		res.status(200).json(finalResponse);
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		errorResponse(res, error, 500);
 	}
 });
 
@@ -63,11 +80,19 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 	try {
 		const doc = await usersCollection.doc(req.params.id).get();
-		if (!doc.exists)
-			return res.status(404).json({ error: 'User not found' });
-		res.json({ id: doc.id, ...doc.data() });
+		if (!doc.exists) {
+			let finalResponse = responseBuilder(404, {}, 'User not found');
+			return res.status(404).json(finalResponse);
+		} else {
+			let finalResponse = responseBuilder(
+				200,
+				{ id: doc.id, ...doc.data() },
+				'User successfully found.'
+			);
+			res.status(200).json(finalResponse);
+		}
 	} catch (error) {
-		res.status(500).json({ error: error.message });
+		errorResponse(res, error, 500);
 	}
 });
 
@@ -78,9 +103,16 @@ router.put('/:id', async (req, res) => {
 		await usersCollection
 			.doc(req.params.id)
 			.update({ first_name, last_name, exercises, meals });
-		res.json({ message: 'User updated' });
+
+		let finalResponse = responseBuilder(
+			200,
+			{},
+			'User successfully updated.'
+		);
+
+		res.status(200).json(finalResponse);
 	} catch (error) {
-		res.status(400).json({ error: error.message });
+		errorResponse(res, error, 400);
 	}
 });
 
@@ -89,9 +121,15 @@ router.delete('/:id', async (req, res) => {
 	try {
 		await admin.auth().deleteUser(req.params.id);
 		await usersCollection.doc(req.params.id).delete();
-		res.json({ message: 'User deleted' });
+
+		let finalResponse = responseBuilder(
+			200,
+			{},
+			'User successfully deleted.'
+		);
+		res.status(200).send(finalResponse);
 	} catch (error) {
-		res.status(400).json({ error: error.message });
+		errorResponse(res, error, 400);
 	}
 });
 
