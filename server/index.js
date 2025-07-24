@@ -12,33 +12,10 @@ dotenv.config({ path: 'local.env' });
 import express from 'express';
 const app = express();
 import path from 'path';
-
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-import admin from './firebase.js';
-import fs from 'fs';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const serviceAccount = JSON.parse(
-	fs.readFileSync(
-		path.join(
-			__dirname,
-			'soma-tracker-firebase-adminsdk-fbsvc-b0d7b7669b.json'
-		)
-	)
-);
-
-if (!admin.apps.length) {
-	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccount),
-	});
-}
+import { globalVariables } from './globals.js';
 
 // Static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(globalVariables.ROOT_FOLDER, 'public')));
 app.use(express.json());
 
 // Templating
