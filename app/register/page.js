@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUser } from '@/lib/services/fetch';
+import { createUser } from '@/lib/services/api';
 
 export default function RegisterPage() {
 	const [first_name, setFirstName] = useState('');
