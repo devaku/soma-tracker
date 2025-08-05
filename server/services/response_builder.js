@@ -7,7 +7,7 @@ export default function responseBuilder(statusCode, body, message = '') {
 		message,
 	};
 
-	if (body.length > 1) {
+	if (body.length > 0) {
 		response.data = body;
 	} else {
 		response.data = {

@@ -1,17 +1,7 @@
 import express from 'express';
-import { firestore } from '../services/firebase.js';
+import admin from '../services/firebase_admin.js';
+const db = admin.firestore();
 import responseBuilder from '../services/response_builder.js';
-
-import {
-	collection,
-	addDoc,
-	query,
-	where,
-	getDocs,
-	deleteDoc,
-	doc,
-	deleteField,
-} from 'firebase/firestore';
 
 const router = express.Router();
 
@@ -43,10 +33,12 @@ router.post('/', async (req, res) => {
 	try {
 		const { userId, exercises } = req.body;
 		let insertedValues = [];
+		const exerciseCollection = db.collection(`users/${userId}/exercises`);
 
-		const q = collection(firestore, 'users', userId, 'exercises');
 		for (let x = 0; x < exercises.length; x++) {
-			const docRef = await addDoc(q, exercises[0]);
+			let docRef = await exerciseCollection.add({
+				...exercises[0],
+			});
 
 			insertedValues.push({
 				id: docRef.id,
@@ -75,10 +67,16 @@ router.get('/', async (req, res) => {
 		 */
 
 		const { userId } = req.query;
+		const collectionRef = db.collection(`users/${userId}/exercises`);
 
-		const querySnapshot = await getDocs(
-			collection(firestore, 'users', userId, 'exercises')
-		);
+		const querySnapshot = await collectionRef.get();
+
+		// // Access documents directly from the 'docs' property of the QuerySnapshot
+		// const documents = querySnapshot.docs;
+
+		// // Or using map to transform into an array of data objects
+		// const dataArray = documents.map((doc) => doc.data());
+		// console.log('Array of document data:', dataArray);
 
 		let exercises = [];
 		querySnapshot.forEach((doc) => {
@@ -99,54 +97,17 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// // READ user by id
-// router.get('/:id', async (req, res) => {
-// 	try {
-// 		const doc = await usersCollection.doc(req.params.id).get();
-// 		if (!doc.exists) {
-// 			let finalResponse = responseBuilder(404, {}, 'User not found');
-// 			return res.status(404).json(finalResponse);
-// 		} else {
-// 			let finalResponse = responseBuilder(
-// 				200,
-// 				{ id: doc.id, ...doc.data() },
-// 				'User successfully found.'
-// 			);
-// 			res.status(200).json(finalResponse);
-// 		}
-// 	} catch (error) {
-// 		errorResponse(res, error, 500);
-// 	}
-// });
-
-// // UPDATE user
-// router.put('/:id', async (req, res) => {
-// 	try {
-// 		const { first_name, last_name, exercises, meals } = req.body;
-// 		await usersCollection
-// 			.doc(req.params.id)
-// 			.update({ first_name, last_name, exercises, meals });
-
-// 		let finalResponse = responseBuilder(
-// 			200,
-// 			{},
-// 			'User successfully updated.'
-// 		);
-
-// 		res.status(200).json(finalResponse);
-// 	} catch (error) {
-// 		errorResponse(res, error, 400);
-// 	}
-// });
-
 // DELETE user
 router.delete('/:id', async (req, res) => {
 	try {
 		const { userId } = req.query;
 		const exerciseId = req.params.id;
-		const databasePath = `users/${userId}/exercises/${exerciseId}`;
 
-		await deleteDoc(doc(firestore, databasePath));
+		const documentRef = db
+			.collection(`users/${userId}/exercises`)
+			.doc(exerciseId);
+
+		let response = await documentRef.delete().then(() => {});
 
 		let finalResponse = responseBuilder(
 			200,
