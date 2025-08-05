@@ -6,14 +6,7 @@ export default function responseBuilder(statusCode, body, message = '') {
 		statusMessage: status[statusCode],
 		message,
 	};
-
-	if (body.length > 0) {
-		response.data = body;
-	} else {
-		response.data = {
-			...body,
-		};
-	}
+	response.data = body;
 
 	return response;
 }

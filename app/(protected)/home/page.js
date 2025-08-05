@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useLoginChecker } from '@/lib/hooks/useLoginChecker';
 
 import { fetchExercise } from '@/lib/services/fetch';
+import { createExercise, readAllExercise } from '@/lib/services/api';
 
 const exerciseReference = [
 	{
@@ -82,10 +83,11 @@ const foodReference = [
 
 export default function HomePage() {
 	const [userExcerciseList, setUserExerciseList] = useState([]);
-
 	const [exerciseName, setExerciseName] = useState('');
 	useLoginChecker();
 	const { user, firebaseSignOut } = useUserAuth();
+
+	const userId = user?.uid;
 	const router = useRouter();
 	useLoginChecker();
 
@@ -94,9 +96,27 @@ export default function HomePage() {
 		router.replace('/');
 	}
 
+	useEffect(() => {
+		fetchAllExercises(userId);
+	}, []);
+
+	async function fetchAllExercises(givenUserId) {
+		let temp = await readAllExercise(givenUserId);
+		temp = temp.data;
+		setUserExerciseList(temp);
+	}
+
 	async function handleSubmitExerciseClick() {
 		const response = await fetchExercise(exerciseName);
-		alert(JSON.stringify(response));
+		//TODO: User should be able to choose which exercise???
+
+		if (response[0]) {
+			const chosenExercise = response[0];
+			await createExercise(userId, [chosenExercise]);
+			await fetchAllExercises(userId);
+		} else {
+			alert('No exercise found');
+		}
 	}
 
 	function handleExerciseNameChange(e) {
@@ -128,15 +148,21 @@ export default function HomePage() {
 			</div>
 			<div>
 				<p className="font-bold">Exercise List</p>
-				<div>
-					<p>Name: </p>
-					<p>Calories Per Minute: </p>
-					<p>Duration (in minutes): </p>
-					<p>Total calories: </p>
-				</div>
+				{userExcerciseList.map((item, index) => {
+					return (
+						<div key={index}>
+							<p>Name: {item.name}</p>
+							<p>Calories Per Hour: {item.calories_per_hour}</p>
+							<p>
+								Duration (in minutes): {item.duration_minutes}
+							</p>
+							<p>Total calories: {item.total_calories} </p>
+						</div>
+					);
+				})}
 			</div>
 			<div>
-				<p>Food List</p>
+				<p className="font-bold">Food List</p>
 				<div>
 					<p>Name: </p>
 					<p>Calories: </p>
