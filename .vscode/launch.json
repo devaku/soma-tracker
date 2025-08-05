@@ -5,8 +5,12 @@
 	"version": "0.2.0",
 	"compounds": [
 		{
-			"name": "Next.js + Chrome",
-			"configurations": ["Run Next.js", "Open Chrome Browser"]
+			"name": "Next.js + Chrome + Express",
+			"configurations": [
+				"Run Next.js",
+				"Open Chrome Browser",
+				"Launch Express"
+			]
 		}
 	],
 	"configurations": [

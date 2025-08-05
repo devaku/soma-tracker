@@ -16,7 +16,7 @@ function errorResponse(res, error, statusCode) {
 }
 
 // CREATE user
-router.post('/', async (req, res) => {
+router.post('/', express.json(), async (req, res) => {
 	try {
 		const { email, password, first_name, last_name } = req.body;
 		// Create user in Firebase Auth
@@ -25,15 +25,18 @@ router.post('/', async (req, res) => {
 			password,
 			displayName: `${first_name} ${last_name}`,
 		});
+
+		let authId = userRecord.uid;
 		// Add user profile to Firestore
 		await usersCollection.doc(userRecord.uid).set({
+			authId,
 			first_name,
 			last_name,
 			email,
 		});
 
 		let finalResponse = responseBuilder(201, {
-			id: userRecord.uid,
+			authId,
 			email,
 			first_name,
 			last_name,

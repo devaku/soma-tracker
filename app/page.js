@@ -1,7 +1,6 @@
 'use client';
 
 import { useUserAuth } from '@/lib/context/auth_context';
-import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 export default function LandingPage() {
@@ -17,10 +16,16 @@ export default function LandingPage() {
 		}
 	}
 
+	function handleRegister() {
+		router.push('/register');
+	}
+
 	return (
 		<main>
 			<div>
 				<button onClick={handleLogin}>Login</button>
+				<br />
+				<button onClick={handleRegister}>Register</button>
 			</div>
 		</main>
 	);

@@ -14,9 +14,13 @@ const app = express();
 import path from 'path';
 import { globalVariables } from './globals.js';
 
+import cors from 'cors';
+
 // Static folder
 app.use(express.static(path.join(globalVariables.ROOT_FOLDER, 'public')));
 app.use(express.json());
+
+app.use(cors());
 
 // Templating
 // app.set('view engine', 'ejs');
