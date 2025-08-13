@@ -51,49 +51,70 @@ export default function RegisterPage() {
 	}
 
 	return (
-		<div>
-			<div>
-				<label htmlFor="email">Email: </label>
+		<main className="flex flex-col mx-auto items-center mt-20 border border-gray-300 bg-white w-fit p-10">
+			<h1 className="font-bold text-4xl text-left w-full mb-1">
+				Register
+			</h1>
+			<h2 className="text-gray-500 text-left w-full mb-8">
+				Enter account information
+			</h2>
+			<div className="border border-gray-300 w-[400px] mb-5">
 				<input
+					className="p-2 w-full"
 					onChange={handleEmailChange}
 					type="email"
 					name="email"
 					id=""
+					placeholder="Email address"
 				/>
 			</div>
-			<div>
-				<label htmlFor="lastname">Password: </label>
+			<div className="border border-gray-300 w-[400px] mb-5">
 				<input
+					className="p-2 w-full"
 					onChange={handlePassword}
 					type="text"
 					name="lastname"
 					id=""
+					placeholder="Password"
 				/>
 			</div>
-			<div>
-				<label htmlFor="firstname">First Name: </label>
+			<div className="border border-gray-300 w-[400px] mb-5">
 				<input
+					className="p-2 w-full"
 					onChange={handleFirstNameChange}
 					type="text"
 					name="firstname"
 					id=""
+					placeholder="First Name"
 				/>
 			</div>
-
-			<div>
-				<label htmlFor="lastname">Last Name: </label>
+			<div className="border border-gray-300 w-[400px] mb-5">
 				<input
+					className="p-2 w-full"
 					onChange={handleLastNameChange}
 					type="text"
 					name="lastname"
 					id=""
+					placeholder="Last Name"
 				/>
 			</div>
 
-			<div>
-				<button onClick={handleSubmitClick}>Submit</button>
-				<button onClick={handleBackClick}>Back</button>
+			<div className="w-[70%] bg-blue-500 py-2 mb-3 text-white rounded-md hover:bg-blue-600 hover:cursor-pointer">
+				<button
+					className="w-full hover:cursor-pointer"
+					onClick={handleSubmitClick}
+				>
+					Submit
+				</button>
 			</div>
-		</div>
+			<div className="w-[70%] border border-gray-300 py-2 mb-3 rounded-md hover:bg-gray-100 hover:cursor-pointer">
+				<button
+					className="w-full hover:cursor-pointer"
+					onClick={handleBackClick}
+				>
+					Back
+				</button>
+			</div>
+		</main>
 	);
 }

@@ -35,7 +35,9 @@ export default function LandingPage() {
 
 	return (
 		<main className="flex flex-col mx-auto items-center mt-20 border border-gray-300 bg-white w-fit p-10">
-			<h1 className="font-bold text-4xl text-left w-full">Welcome</h1>
+			<h1 className="font-bold text-4xl text-left w-full mb-1">
+				Welcome
+			</h1>
 			<h2 className="text-gray-500 text-left w-full mb-8">
 				Login or Register
 			</h2>
