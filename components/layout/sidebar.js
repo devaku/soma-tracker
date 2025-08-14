@@ -128,7 +128,7 @@ export default function Sidebar({ children }) {
 											flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200
 											${
 												isActive
-													? 'bg-blue-100 text-blue-700'
+													? 'bg-green-100 text-green-800'
 													: 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
 											}
 										`}
@@ -184,8 +184,8 @@ export default function Sidebar({ children }) {
 				</header>
 
 				{/* Main Content */}
-				<main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 lg:p-6">
-					<div className=" max-w-7xl mx-auto">{children}</div>
+				<main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+					<div className="">{children}</div>
 				</main>
 			</div>
 		</div>

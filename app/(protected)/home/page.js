@@ -124,67 +124,94 @@ export default function HomePage() {
 	}
 
 	return (
-		<main>
-			<div>
-				<p className="font-bold">Enter Exercise</p>
-				<div>
-					<label htmlFor="exercise_name">Exercise Name: </label>
-					<input
-						className="border-2 border-black"
-						onChange={handleExerciseNameChange}
-						type="text"
-						name="exercise_name"
-						id=""
-					/>
-				</div>
-				<div>
-					<button
-						className="p-2 rounded-xl bg-sky-500 cursor-pointer"
-						onClick={handleSubmitExerciseClick}
-					>
-						Search Exercise
-					</button>
+		<main className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
+			<div className="max-w-2xl mx-auto">
+				{/* Page Header */}
+				<div className="mb-8">
+					<h1 className="text-3xl font-bold text-green-800 mb-2">
+						Dashboard
+					</h1>
+					<p className="text-green-600">Your SOMA Tracker overview</p>
 				</div>
 			</div>
-			<div>
-				<p className="font-bold">Exercise List</p>
-				{userExcerciseList.map((item, index) => {
-					return (
-						<div key={index}>
-							<p>Name: {item.name}</p>
-							<p>Calories Per Hour: {item.calories_per_hour}</p>
-							<p>
-								Duration (in minutes): {item.duration_minutes}
-							</p>
-							<p>Total calories: {item.total_calories} </p>
-						</div>
-					);
-				})}
-			</div>
-			<div>
-				<p className="font-bold">Food List</p>
-				<div>
-					<p>Name: </p>
-					<p>Calories: </p>
-					<p>Serving Size (g): </p>
-					<p>Total Fat (g): </p>
-					<p>Saturated Fat (g):</p>
-					<p>Protein (g): </p>
-					<p>Sodium (mg): </p>
-					<p>Potassium (mg): </p>
-					<p>Cholesterol (mg): </p>
-					<p>Total Carbohydrates (g):</p>
-					<p>Fiber (g): </p>
-					<p>Sugar (g): </p>
+
+			<div className="max-w-6xl mx-auto flex gap-5 h-screen justify-evenly">
+				{/* Daily Calorie Intake */}
+				<div className="w-full flex flex-col gap-5">
+					<div className="bg-green-50 border border-green-300 rounded-lg flex flex-col py-4 px-10">
+						<h2 className="text-xl font-bold text-green-800 mb-3 text-center">
+							Today's Calorie Intake
+						</h2>
+						<p className="text-center text-green-600 font-semibold text-3xl">
+							5234 cal
+						</p>
+					</div>
+
+					<div className="bg-green-50 border border-green-300 rounded-lg flex flex-col py-4 px-10">
+						<h2 className="text-xl font-bold text-green-800 mb-3 text-center">
+							Intake Breakdown
+						</h2>
+						<table className="border-spacing-y-[8px] border-separate">
+							<tr>
+								<th>Meal</th>
+								<th>Calories</th>
+							</tr>
+							{foodReference.map((item, i) => {
+								return i % 2 == 0 ? (
+									<tr className="bg-green-100">
+										<td className="p-1">{item.name}</td>
+										<td>{item.calories}</td>
+									</tr>
+								) : (
+									<tr>
+										<td className="p-1">{item.name}</td>
+										<td>{item.calories}</td>
+									</tr>
+								);
+							})}
+						</table>
+					</div>
 				</div>
-			</div>
-			<div>
-				<button
-					className="p-2 rounded-xl bg-sky-500 cursor-pointer"
-					onClick={handleLogout}
-				>
-					Logout
-				</button>
+
+				{/* Calories Burned */}
+				<div className="w-full flex flex-col gap-5">
+					<div className="bg-green-50 border border-green-300 rounded-lg flex flex-col py-4 px-10">
+						<h2 className="text-xl font-bold text-green-800 mb-3 text-center">
+							Today's Calories Burned
+						</h2>
+						<p className="text-center text-green-600 font-semibold text-3xl">
+							4155 cal
+						</p>
+					</div>
+
+					<div className="bg-green-50 border border-green-300 rounded-lg flex flex-col py-4 px-10">
+						<h2 className="text-xl font-bold text-green-800 mb-3 text-center">
+							Burn Breakdown
+						</h2>
+						<table className="border-spacing-y-[8px] border-separate">
+							<tr>
+								<th>Activity</th>
+								<th>Duration</th>
+								<th>Burned</th>
+							</tr>
+							{exerciseReference.map((item, i) => {
+								return i % 2 == 0 ? (
+									<tr className="bg-green-100">
+										<td className="p-1">{item.name}</td>
+										<td>{item.duration_minutes}</td>
+										<td>{item.calories_per_hour}</td>
+									</tr>
+								) : (
+									<tr>
+										<td className="p-1">{item.name}</td>
+										<td>{item.duration_minutes}</td>
+										<td>{item.calories_per_hour}</td>
+									</tr>
+								);
+							})}
+						</table>
+					</div>
+				</div>
 			</div>
 		</main>
 	);

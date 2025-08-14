@@ -38,7 +38,7 @@ export default function MealPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6 rounded-2xl">
+		<div className="min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
 			<div className="max-w-2xl mx-auto">
 				{/* Page Header */}
 				<div className="mb-8">
