@@ -2,12 +2,17 @@
 import { useState } from 'react';
 import { useLoginChecker } from '@/lib/hooks/useLoginChecker';
 import { useExerciseAPI, formatExerciseData } from '@/lib/hooks/exerciseAPI';
+import { createExercise, readAllExercise } from '@/lib/services/api';
+import { useUserAuth } from '@/lib/context/auth_context';
+import { getExpectedRequestStore } from 'next/dist/server/app-render/work-unit-async-storage.external';
 
 export default function ExercisePage() {
 	const [activityName, setActivityName] = useState('');
 	const [weight, setWeight] = useState();
 	const [duration, setDuration] = useState();
 	const [exerciseData, setExerciseData] = useState(null);
+	const { user, firebaseSignOut } = useUserAuth();
+	const userId = user?.uid;
 
 	const { fetchCaloriesBurned, loading, error } = useExerciseAPI();
 	useLoginChecker();
@@ -24,7 +29,29 @@ export default function ExercisePage() {
 		setDuration(Number(e.target.value));
 	}
 
+	async function handleSubmitExerciseClick(exercise) {
+		let newExercise = {
+			name: exercise.name,
+			calories_per_hour: exercise.caloriesPerHour,
+			duration_minutes: exercise.durationMinutes,
+			totall_calories:
+				exercise.caloriesPerHour * (exercise.durationMinutes / 60),
+		};
+
+		await createExercise(userId, [newExercise]);
+	}
+
 	async function handleSubmitExercise() {
+		if (weight < 50 || weight > 500) {
+			alert('Please enter a weight value between 50 and 500');
+			return;
+		}
+
+		if (duration < 1) {
+			alert('Please enter a duration value greater than 1');
+			return;
+		}
+
 		if (!activityName.trim()) {
 			alert('Please enter an activity name');
 			return;
@@ -164,9 +191,20 @@ export default function ExercisePage() {
 
 						{exerciseData.map((exercise, index) => (
 							<div key={index} className="mb-6 last:mb-0">
-								<h3 className="text-xl font-semibold text-green-700 mb-4">
-									{exercise.name}
-								</h3>
+								<div className="flex justify-between">
+									<h3 className="text-xl font-semibold text-green-700 mb-4">
+										{exercise.name}
+									</h3>
+
+									<button
+										className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold rounded-lg px-3 py-1 mb-4"
+										onClick={() =>
+											handleSubmitExerciseClick(exercise)
+										}
+									>
+										Save
+									</button>
+								</div>
 
 								{/* Main Stats */}
 								<div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
