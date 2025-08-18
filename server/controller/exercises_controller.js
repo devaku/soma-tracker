@@ -40,6 +40,11 @@ router.post('/', async (req, res) => {
 				...exercises[0],
 			});
 
+			// Attach the ID into the collection
+			await exerciseCollection
+				.doc(docRef.id)
+				.update({ exercise_id: docRef.id });
+
 			insertedValues.push({
 				id: docRef.id,
 				...exercises[0],
