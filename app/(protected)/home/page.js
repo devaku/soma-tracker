@@ -84,6 +84,7 @@ const foodReference = [
 export default function HomePage() {
 	const [userExcerciseList, setUserExerciseList] = useState([]);
 	const [exerciseName, setExerciseName] = useState('');
+	const [totalCals, setTotalCals] = useState(0);
 	useLoginChecker();
 	const { user, firebaseSignOut } = useUserAuth();
 
@@ -104,6 +105,15 @@ export default function HomePage() {
 		let temp = await readAllExercise(givenUserId);
 		temp = temp.data;
 		setUserExerciseList(temp);
+
+		let cals = 0;
+		for (var i = 0; i < temp.length; i++) {
+			let exercise = temp[i];
+			cals +=
+				(exercise.duration_minutes / 60) * exercise.calories_per_hour;
+		}
+
+		setTotalCals(cals);
 	}
 
 	async function handleSubmitExerciseClick() {
@@ -152,23 +162,27 @@ export default function HomePage() {
 							Intake Breakdown
 						</h2>
 						<table className="border-spacing-y-[8px] border-separate">
-							<tr>
-								<th>Meal</th>
-								<th>Calories</th>
-							</tr>
-							{foodReference.map((item, i) => {
-								return i % 2 == 0 ? (
-									<tr className="bg-green-100">
-										<td className="p-1">{item.name}</td>
-										<td>{item.calories}</td>
-									</tr>
-								) : (
-									<tr>
-										<td className="p-1">{item.name}</td>
-										<td>{item.calories}</td>
-									</tr>
-								);
-							})}
+							<thead>
+								<tr>
+									<th>Meal</th>
+									<th>Calories</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foodReference.map((item, i) => {
+									return i % 2 == 0 ? (
+										<tr className="bg-green-100">
+											<td className="p-1">{item.name}</td>
+											<td>{item.calories}</td>
+										</tr>
+									) : (
+										<tr>
+											<td className="p-1">{item.name}</td>
+											<td>{item.calories}</td>
+										</tr>
+									);
+								})}
+							</tbody>
 						</table>
 					</div>
 				</div>
@@ -180,7 +194,7 @@ export default function HomePage() {
 							Today's Calories Burned
 						</h2>
 						<p className="text-center text-green-600 font-semibold text-3xl">
-							4155 cal
+							{totalCals} cal
 						</p>
 					</div>
 
@@ -189,26 +203,30 @@ export default function HomePage() {
 							Burn Breakdown
 						</h2>
 						<table className="border-spacing-y-[8px] border-separate">
-							<tr>
-								<th>Activity</th>
-								<th>Duration</th>
-								<th>Burned</th>
-							</tr>
-							{exerciseReference.map((item, i) => {
-								return i % 2 == 0 ? (
-									<tr className="bg-green-100">
-										<td className="p-1">{item.name}</td>
-										<td>{item.duration_minutes}</td>
-										<td>{item.calories_per_hour}</td>
-									</tr>
-								) : (
-									<tr>
-										<td className="p-1">{item.name}</td>
-										<td>{item.duration_minutes}</td>
-										<td>{item.calories_per_hour}</td>
-									</tr>
-								);
-							})}
+							<thead>
+								<tr>
+									<th>Activity</th>
+									<th>Duration</th>
+									<th>Burned</th>
+								</tr>
+							</thead>
+							<tbody>
+								{userExcerciseList.map((item, i) => {
+									return i % 2 == 0 ? (
+										<tr className="bg-green-100">
+											<td className="p-1">{item.name}</td>
+											<td>{item.duration_minutes}</td>
+											<td>{item.calories_per_hour}</td>
+										</tr>
+									) : (
+										<tr>
+											<td className="p-1">{item.name}</td>
+											<td>{item.duration_minutes}</td>
+											<td>{item.calories_per_hour}</td>
+										</tr>
+									);
+								})}
+							</tbody>
 						</table>
 					</div>
 				</div>
