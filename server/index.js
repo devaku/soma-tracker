@@ -27,12 +27,12 @@ app.use(cors());
 // app.set('views', path.join(__dirname, 'public/views'));
 
 // Set port
-app.set('PORT', process.env.EXPRESS_PORT);
+app.set('PORT', 8080);
 
 // API ROUTES
 import routes from './routes.js';
 app.use('/api/v1', routes);
 
-app.listen(process.env.EXPRESS_PORT, () => {
-	console.log(`Server is listening at localhost:${process.env.EXPRESS_PORT}`);
+app.listen(8080, () => {
+	console.log(`Server is listening at localhost:${8080}`);
 });
