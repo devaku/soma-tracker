@@ -46,6 +46,10 @@ router.post('/', async (req, res) => {
 			.collection('meals');
 		for (let x = 0; x < meals.length; x++) {
 			const docRef = await mealsCollection.add(meals[x]);
+
+			// Attach the ID into the collection
+			await mealsCollection.doc(docRef.id).update({ meal_id: docRef.id });
+
 			insertedValues.push({
 				id: docRef.id,
 				...meals[x],
