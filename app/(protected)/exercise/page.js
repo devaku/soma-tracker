@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useLoginChecker } from '@/lib/hooks/useLoginChecker';
 import { useExerciseAPI, formatExerciseData } from '@/lib/hooks/exerciseAPI';
-import { createExercise, readAllExercise } from '@/lib/services/api';
+import { createExercise } from '@/lib/services/api';
 import { useUserAuth } from '@/lib/context/auth_context';
 import { getExpectedRequestStore } from 'next/dist/server/app-render/work-unit-async-storage.external';
 

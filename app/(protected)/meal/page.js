@@ -2,10 +2,14 @@
 import { useState } from 'react';
 import { useLoginChecker } from '@/lib/hooks/useLoginChecker';
 import { useNutritionAPI, formatNutritionData } from '@/lib/hooks/nutritionAPI';
+import { createMeal } from '@/lib/services/api';
+import { useUserAuth } from '@/lib/context/auth_context';
 
 export default function MealPage() {
 	const [mealName, setMealName] = useState('');
 	const [nutritionData, setNutritionData] = useState(null);
+	const { user, firebaseSignOut } = useUserAuth();
+	const userId = user?.uid;
 
 	const { fetchNutrition, loading, error } = useNutritionAPI();
 	useLoginChecker();
@@ -35,6 +39,10 @@ export default function MealPage() {
 			console.error(error);
 			setNutritionData(null);
 		}
+	}
+
+	async function handleSubmitMealClick(meal) {
+		await createMeal(userId, [meal]);
 	}
 
 	return (
@@ -107,9 +115,20 @@ export default function MealPage() {
 				{/* Nutrition Information Box */}
 				{nutritionData && (
 					<div className="bg-white border-2 border-green-300 rounded-lg p-6 shadow-lg">
-						<h2 className="text-2xl font-bold text-green-800 mb-4">
-							Nutrition Information for "{nutritionData.name}"
-						</h2>
+						<div className="flex justify-between">
+							<h2 className="text-2xl font-bold text-green-800 mb-4">
+								Nutrition Information for "{nutritionData.name}"
+							</h2>
+
+							<button
+								className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold rounded-lg px-3 py-1 mb-4"
+								onClick={() =>
+									handleSubmitMealClick(nutritionData)
+								}
+							>
+								Save
+							</button>
+						</div>
 
 						{/* Calories and Serving Size */}
 						<div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
