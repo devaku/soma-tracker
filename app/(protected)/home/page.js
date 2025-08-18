@@ -116,19 +116,6 @@ export default function HomePage() {
 		setTotalCals(cals);
 	}
 
-	async function handleSubmitExerciseClick() {
-		const response = await fetchExercise(exerciseName);
-		//TODO: User should be able to choose which exercise???
-
-		if (response[0]) {
-			const chosenExercise = response[0];
-			await createExercise(userId, [chosenExercise]);
-			await fetchAllExercises(userId);
-		} else {
-			alert('No exercise found');
-		}
-	}
-
 	function handleExerciseNameChange(e) {
 		setExerciseName(e.target.value);
 	}
