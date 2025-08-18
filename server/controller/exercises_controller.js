@@ -1,9 +1,9 @@
 import express from 'express';
 import admin from '../services/firebase_admin.js';
-const db = admin.firestore();
 import responseBuilder from '../services/response_builder.js';
 
 const router = express.Router();
+const db = admin.firestore();
 
 function errorResponse(res, error, statusCode) {
 	let finalResponse = responseBuilder(statusCode, {

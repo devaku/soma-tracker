@@ -129,7 +129,7 @@ export default function HomePage() {
 							<thead>
 								<tr>
 									<th className="text-left">Meal</th>
-									<th className="text-left">Calories</th>
+									<th className="text-left">Carbs</th>
 									<th />
 								</tr>
 							</thead>
